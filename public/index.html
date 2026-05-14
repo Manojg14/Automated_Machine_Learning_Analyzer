@@ -474,7 +474,13 @@
                 body: JSON.stringify({ csv_data: csvData, target: target })
             });
 
-            var data = await response.json();
+            var data;
+            try {
+                data = await response.json();
+            } catch (parseErr) {
+                showError('Server error: the analysis service is unavailable. Please try again later.');
+                return;
+            }
 
             if (!response.ok) {
                 showError(data.error || 'Analysis failed. Please try again.');
